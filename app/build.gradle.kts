@@ -6,7 +6,6 @@ plugins {
 android {
     namespace = "com.example.weatherapp"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.example.weatherapp"
         minSdk = 26
@@ -16,7 +15,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -32,6 +30,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding = true
+
     }
 }
 

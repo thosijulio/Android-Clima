@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.weatherapp.R
 import com.example.weatherapp.data.api.OpenWeatherApi
+import com.example.weatherapp.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
@@ -17,31 +18,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
-    private val mTextInputLayout: TextInputLayout by lazy { findViewById(R.id.main_text_input_layout) }
-    private val mTextField: TextInputEditText by lazy { findViewById(R.id.main_text_field) }
-    private val mCityName: TextView by lazy { findViewById(R.id.main_tv_city_name) }
-    private val mCityTemp: TextView by lazy { findViewById(R.id.main_tv_city_temp) }
-    private val mCityMaxTemp: TextView by lazy { findViewById(R.id.main_tv_city_max_temp) }
-    private val mCityMinTemp: TextView by lazy { findViewById(R.id.main_tv_city_min_temp) }
-    private val mCityFeelsLike: TextView by lazy { findViewById(R.id.main_tv_city_feels_temp) }
-    private val mCityHumidity: TextView by lazy { findViewById(R.id.main_tv_city_humidity) }
-    private val mCityForecastContainer: ConstraintLayout by lazy { findViewById(R.id.main_cl_forecast) }
-    private val mCityForecast01Temp: TextView by lazy { findViewById(R.id.main_forecast_01_temp) }
-    private val mCityForecast01Date: TextView by lazy { findViewById(R.id.main_forecast_01_date) }
-    private val mCityForecast02Temp: TextView by lazy { findViewById(R.id.main_forecast_02_temp) }
-    private val mCityForecast02Date: TextView by lazy { findViewById(R.id.main_forecast_02_date) }
+    private lateinit var binding: ActivityMainBinding
 
     val openWeatherServiceApi = OpenWeatherApi.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        mTextInputLayout.setEndIconOnClickListener {
+        binding.mainTextInputLayout.setEndIconOnClickListener {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(mCityName.windowToken, 0)
+            imm.hideSoftInputFromWindow(binding.mainTvCityName.windowToken, 0)
 
-            val cityName = mTextField.text.toString()
+            val cityName = binding.mainTextField.text.toString()
 
             CoroutineScope(Dispatchers.IO).launch {
                 val getLocationResponse = openWeatherServiceApi.getLocation(cityName)
@@ -62,12 +52,12 @@ class MainActivity : AppCompatActivity() {
 
                         Log.i("Forecast", getForecastResult.toString())
                         withContext(Dispatchers.Main) {
-                            mCityName.text = getLocationResult?.name
-                            mTextField.setText("")
-                            mCityFeelsLike.text = getWeatherResult?.main?.feelsLike.toString()
-                            mCityHumidity.text = getWeatherResult?.main?.humidity.toString()
-                            mCityMinTemp.text = getWeatherResult?.main?.temp_min.toString()
-                            mCityMaxTemp.text = getWeatherResult?.main?.temp_max.toString()
+                            binding.mainTvCityName.text = getLocationResult?.name
+                            binding.mainTextField.setText("")
+                            binding.mainTvCityFeelsTemp.text = getWeatherResult?.main?.feelsLike.toString()
+                            binding.mainTvCityHumidity.text = getWeatherResult?.main?.humidity.toString()
+                            binding.mainTvCityMinTemp.text = getWeatherResult?.main?.temp_min.toString()
+                            binding.mainTvCityMaxTemp.text = getWeatherResult?.main?.temp_max.toString()
                         }
                     }
                 }

@@ -14,5 +14,6 @@ data class Main(
 
 data class CurrentWeatherData(
     val main: Main,
-    val dt: Long
+    val dt: Long,
+    val name: String
 )

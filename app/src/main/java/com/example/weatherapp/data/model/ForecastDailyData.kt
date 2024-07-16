@@ -9,6 +9,6 @@ data class TempList(
     val main: Temp,
 )
 
-data class ForecastDaily(
+data class ForecastDailyData(
     val list: List<TempList>
 )

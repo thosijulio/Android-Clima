@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">WeatherApp</string>
-    <string name="main_activity_text_input_hint_label">Digite o nome da cidade</string>
+    <string name="main_activity_text_input_hint_label">Please type city name</string>
     <string name="main_activity_temp_formatted">%2.1fºC</string>
     <string name="main_activity_humidity_formatted">%2d%%</string>
     <string name="main_activity_max_temp_label">Máx:</string>
     <string name="main_activity_min_temp_label">Min:</string>
-    <string name="main_activity_feels_like_label">Sensação Térmica:</string>
-    <string name="main_activity_humidity_label">Umidade:</string>
-    <string name="main_activity_forecast_container_label">Previsão Diária</string>
+    <string name="main_activity_feels_like_label">Feels Like:</string>
+    <string name="main_activity_humidity_label">Humidity:</string>
+    <string name="main_activity_forecast_container_label">Daily Forecast</string>
 </resources>

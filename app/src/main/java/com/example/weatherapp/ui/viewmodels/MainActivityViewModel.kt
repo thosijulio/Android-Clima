@@ -34,8 +34,8 @@ class MainActivityViewModel : ViewModel() {
     val feelsTemp: LiveData<Double>
         get() = _feelsTemp
 
-    private var _humidity = MutableLiveData(0.0)
-    val humidity: LiveData<Double>
+    private var _humidity = MutableLiveData(0)
+    val humidity: LiveData<Int>
         get() = _humidity
 
     private var _isForecastContainerVisible = MutableLiveData(false)
@@ -46,16 +46,16 @@ class MainActivityViewModel : ViewModel() {
     val forecast01Temp: LiveData<Double>
         get() = _forecast01Temp
 
-    private var _forecast01Date = MutableLiveData(0L)
-    val forecast01Date: LiveData<Long>
+    private var _forecast01Date = MutableLiveData("")
+    val forecast01Date: LiveData<String>
         get() = _forecast01Date
 
     private var _forecast02Temp = MutableLiveData(0.0)
     val forecast02Temp: MutableLiveData<Double>
         get() = _forecast02Temp
 
-    private var _forecast02Date = MutableLiveData(0L)
-    val forecast02Date: LiveData<Long>
+    private var _forecast02Date = MutableLiveData("")
+    val forecast02Date: LiveData<String>
         get() = _forecast02Date
 
     private suspend fun getCurrentWeatherData(cityName: String): CurrentWeatherData? {
@@ -81,9 +81,9 @@ class MainActivityViewModel : ViewModel() {
                 _maxTemp.postValue(weatherData.main.temp_max)
                 _humidity.postValue(weatherData.main.humidity)
                 _isForecastContainerVisible.postValue(true)
-                _forecast01Date.postValue(forecastData.list[0].dt)
+                _forecast01Date.postValue(formatTimestamp(forecastData.list[0].dt))
                 _forecast01Temp.postValue(forecastData.list[0].main.temp)
-                _forecast02Date.postValue(forecastData.list[1].dt)
+                _forecast02Date.postValue(formatTimestamp(forecastData.list[1].dt))
                 _forecast02Temp.postValue(forecastData.list[1].main.temp)
             }
         }

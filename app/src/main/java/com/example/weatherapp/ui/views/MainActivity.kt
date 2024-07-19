@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.DataBindingUtil
 import com.example.weatherapp.R
 import com.example.weatherapp.data.api.OpenWeatherApi
 import com.example.weatherapp.databinding.ActivityMainBinding
@@ -26,10 +27,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        // binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.vm = viewModel
         setContentView(binding.root)
+        binding.lifecycleOwner = this
 
-        updateUI()
 
         binding.mainTextInputLayout.setEndIconOnClickListener {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -37,21 +40,6 @@ class MainActivity : AppCompatActivity() {
 
             val cityName = binding.mainTextField.text.toString()
             viewModel.updateWeatherByCityName(cityName)
-            updateUI()
         }
-    }
-
-    private fun updateUI() {
-        binding.mainTextField.setText("")
-        binding.mainTvCityName.text = viewModel.cityName
-        binding.mainTvCityFeelsTemp.text = "${viewModel.feelsTemp}"
-        binding.mainTvCityHumidity.text = "${viewModel.humidity}"
-        binding.mainTvCityMinTemp.text = "${viewModel.minTemp}"
-        binding.mainTvCityMaxTemp.text = "${viewModel.maxTemp}"
-        binding.mainForecast01Date.text = "${viewModel.forecast01Date}"
-        binding.mainForecast02Date.text = "${viewModel.forecast02Date}"
-        binding.mainForecast01Temp.text = "${viewModel.forecast01Temp}"
-        binding.mainForecast02Temp.text = "${viewModel.forecast02Temp}"
-        binding.mainClForecast.visibility = if(viewModel.isForecastContainerVisible) View.VISIBLE else View.INVISIBLE
     }
 }

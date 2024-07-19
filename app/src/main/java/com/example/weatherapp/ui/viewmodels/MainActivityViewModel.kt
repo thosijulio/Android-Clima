@@ -1,5 +1,7 @@
 package com.example.weatherapp.ui.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weatherapp.data.api.OpenWeatherApi
 import com.example.weatherapp.data.api.OpenWeatherService
@@ -12,47 +14,48 @@ import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
     private val mOpenWeatherService = OpenWeatherApi.instance
-    private var _cityName: String = ""
-    val cityName get() = _cityName
 
-    private var _temp = 0.0
-    val temp: Double
+    private var _cityName = MutableLiveData("")
+    val cityName get(): LiveData<String> = _cityName
+
+    private var _temp = MutableLiveData(0.0)
+    val temp: LiveData<Double>
         get() = _temp
 
-    private var _maxTemp = 0.0
-    val maxTemp: Double
+    private var _maxTemp = MutableLiveData(0.0)
+    val maxTemp: LiveData<Double>
         get() = _maxTemp
 
-    private var _minTemp = 0.0
-    val minTemp: Double
+    private var _minTemp = MutableLiveData(0.0)
+    val minTemp: LiveData<Double>
         get() = _minTemp
 
-    private var _feelsTemp = 0.0
-    val feelsTemp: Double
+    private var _feelsTemp = MutableLiveData(0.0)
+    val feelsTemp: LiveData<Double>
         get() = _feelsTemp
 
-    private var _humidity = 0.0
-    val humidity: Double
+    private var _humidity = MutableLiveData(0.0)
+    val humidity: LiveData<Double>
         get() = _humidity
 
-    private var _isForecastContainerVisible = false
-    val isForecastContainerVisible: Boolean
+    private var _isForecastContainerVisible = MutableLiveData(false)
+    val isForecastContainerVisible: LiveData<Boolean>
         get() = _isForecastContainerVisible
 
-    private var _forecast01Temp = 0.0
-    val forecast01Temp: Double
+    private var _forecast01Temp = MutableLiveData(0.0)
+    val forecast01Temp: LiveData<Double>
         get() = _forecast01Temp
 
-    private var _forecast01Date: Long = 0
-    val forecast01Date: Long
+    private var _forecast01Date = MutableLiveData(0L)
+    val forecast01Date: LiveData<Long>
         get() = _forecast01Date
 
-    private var _forecast02Temp = 0.0
-    val forecast02Temp: Double
+    private var _forecast02Temp = MutableLiveData(0.0)
+    val forecast02Temp: MutableLiveData<Double>
         get() = _forecast02Temp
 
-    private var _forecast02Date: Long = 0
-    val forecast02Date: Long
+    private var _forecast02Date = MutableLiveData(0L)
+    val forecast02Date: LiveData<Long>
         get() = _forecast02Date
 
     private suspend fun getCurrentWeatherData(cityName: String): CurrentWeatherData? {
@@ -71,18 +74,17 @@ class MainActivityViewModel : ViewModel() {
             val forecastData = getForecastDailyData(cityName)
 
             if (weatherData != null && forecastData != null) {
-                _cityName = weatherData.name
-                _feelsTemp = weatherData.main.feelsLike
-                _temp = weatherData.main.temp
-                _minTemp = weatherData.main.temp_min
-                _maxTemp = weatherData.main.temp_max
-                _humidity = weatherData.main.humidity
-
-                _isForecastContainerVisible = true
-                _forecast01Date = forecastData.list[0].dt
-                _forecast01Temp = forecastData.list[0].main.temp
-                _forecast02Date = forecastData.list[1].dt
-                _forecast02Temp = forecastData.list[1].main.temp
+                _cityName.postValue(weatherData.name)
+                _feelsTemp.postValue(weatherData.main.feelsLike)
+                _temp.postValue(weatherData.main.temp)
+                _minTemp.postValue(weatherData.main.temp_min)
+                _maxTemp.postValue(weatherData.main.temp_max)
+                _humidity.postValue(weatherData.main.humidity)
+                _isForecastContainerVisible.postValue(true)
+                _forecast01Date.postValue(forecastData.list[0].dt)
+                _forecast01Temp.postValue(forecastData.list[0].main.temp)
+                _forecast02Date.postValue(forecastData.list[1].dt)
+                _forecast02Temp.postValue(forecastData.list[1].main.temp)
             }
         }
     }
